@@ -5,6 +5,7 @@ const UserController = require('./app/controllers/UserController');
 const SessionController = require('./app/controllers/SessionController');
 const ProviderController = require('./app/controllers/ProviderController');
 const FileController = require('./app/controllers/FileController');
+const AppointmentController = require('./app/controllers/AppointmentController');
 const authMiddleware = require('./app/middlewates/auth');
 
 const routes = new Router();
@@ -19,6 +20,10 @@ routes.use(authMiddleware);
 routes.put('/users', UserController.update);
 
 routes.get('/providers', ProviderController.index);
+
+routes.post('/appointments', AppointmentController.store);
+
+routes.get('/appointments', AppointmentController.index);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
