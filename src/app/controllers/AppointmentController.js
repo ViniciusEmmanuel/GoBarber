@@ -1,8 +1,10 @@
 const Yup = require('yup');
-const { startOfHour, parseISO, isBefore } = require('date-fns');
+const { startOfHour, parseISO, isBefore, format } = require('date-fns');
+const pt = require('date-fns/locale/pt-BR');
 const User = require('../models/User');
 const File = require('../models/File');
 const Appointment = require('../models/Appointment');
+const Notification = require('../schemas/Notification');
 
 class AppointmentController {
   async index(req, res) {
@@ -58,6 +60,12 @@ class AppointmentController {
         .json({ error: 'Usuário selecionado não é Barbeiro!!!.' });
     }
 
+    if (req.userId == provider_id) {
+      return res.status(401).json({
+        error: 'Ação invalida. Usuàrio igual ao Barbeiro Selecionado!!!.',
+      });
+    }
+
     const hourStart = startOfHour(parseISO(date));
 
     /**
@@ -93,6 +101,20 @@ class AppointmentController {
       date,
     });
 
+    /**
+     * Notify appointment provider
+     */
+
+    const user = await User.findByPk(req.userId);
+
+    const formatedDate = format(hourStart, "'dia' dd 'de' MMMM', às' H:mm'h'", {
+      locale: pt,
+    });
+
+    await Notification.create({
+      content: `Novo agendamento de ${user.name} para ${formatedDate}`,
+      user: provider_id,
+    });
     return res.json(appointment);
   }
 }
