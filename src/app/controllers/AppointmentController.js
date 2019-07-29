@@ -1,5 +1,11 @@
 const Yup = require('yup');
-const { startOfHour, parseISO, isBefore, format } = require('date-fns');
+const {
+  startOfHour,
+  parseISO,
+  isBefore,
+  format,
+  subHours,
+} = require('date-fns');
 const pt = require('date-fns/locale/pt-BR');
 const User = require('../models/User');
 const File = require('../models/File');
@@ -115,6 +121,31 @@ class AppointmentController {
       content: `Novo agendamento de ${user.name} para ${formatedDate}`,
       user: provider_id,
     });
+    return res.json(appointment);
+  }
+
+  async delete(req, res) {
+    const appointment = await Appointment.findByPk(req.params.id);
+
+    if (appointment.user_id !== req.userId) {
+      return res
+        .status(401)
+        .json({ error: 'Usuàrio diferente do agendamento!!!.' });
+    }
+
+    const dateSub = subHours(appointment.date, 2);
+
+    if (isBefore(dateSub, new Date())) {
+      return res.status(401).json({
+        error:
+          'Ação inválida. Cancelamento somente com mais de duas horas de antecedencia!!!.',
+      });
+    }
+
+    appointment.canceled_at = new Date();
+
+    await appointment.save();
+
     return res.json(appointment);
   }
 }
