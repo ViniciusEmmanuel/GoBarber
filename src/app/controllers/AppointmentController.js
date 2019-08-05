@@ -68,7 +68,7 @@ class AppointmentController {
         .json({ error: 'Usuário selecionado não é Barbeiro!!!.' });
     }
 
-    if (req.userId == provider_id) {
+    if (req.userId === provider_id) {
       return res.status(401).json({
         error: 'Ação invalida. Usuàrio igual ao Barbeiro Selecionado!!!.',
       });

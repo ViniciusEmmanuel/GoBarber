@@ -4,10 +4,12 @@ const Mogoose = require('mongoose');
 const User = require('../app/models/User');
 const File = require('../app/models/File');
 const Appointment = require('../app/models/Appointment');
+const Days = require('../app/models/Days');
+const DaysWorkProvider = require('../app/models/DaysWorkProvider');
 
 const databaseConfig = require('../config/database');
 
-const models = [User, File, Appointment];
+const models = [User, File, Appointment, Days, DaysWorkProvider];
 
 class Database {
   constructor() {

@@ -4,10 +4,12 @@ const multerConfig = require('./config/multer');
 const UserController = require('./app/controllers/UserController');
 const SessionController = require('./app/controllers/SessionController');
 const ProviderController = require('./app/controllers/ProviderController');
+const AvailableController = require('./app/controllers/AvailableController');
 const FileController = require('./app/controllers/FileController');
 const AppointmentController = require('./app/controllers/AppointmentController');
 const ScheduleController = require('./app/controllers/ScheduleController');
 const NotificationController = require('./app/controllers/NotificationController');
+const ProviderAdminController = require('./app/controllers/ProviderAdminController');
 const authMiddleware = require('./app/middlewates/auth');
 
 const routes = new Router();
@@ -23,11 +25,16 @@ routes.put('/users', UserController.update);
 
 routes.get('/providers', ProviderController.index);
 
+routes.get('/providers/:providerId/available', AvailableController.index);
+
 routes.post('/appointments', AppointmentController.store);
 routes.get('/appointments', AppointmentController.index);
 routes.delete('/appointments/:id', AppointmentController.delete);
 
 routes.get('/schedule', ScheduleController.index);
+
+routes.get('/admin', ProviderAdminController.index);
+routes.post('/admin', ProviderAdminController.store);
 
 routes.get('/notifications', NotificationController.index);
 routes.put('/notifications/:id', NotificationController.update);
