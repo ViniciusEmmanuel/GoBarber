@@ -46,6 +46,7 @@ class SheduleController {
         },
       ],
     });
+
     return res.json(appointment);
   }
 }

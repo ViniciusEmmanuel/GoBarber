@@ -12,6 +12,11 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      numberDay: {
+        type: Sequelize.INTEGER,
+        unique: true,
+        allowNull: false,
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
