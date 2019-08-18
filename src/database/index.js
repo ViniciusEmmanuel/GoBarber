@@ -26,13 +26,10 @@ class Database {
   }
 
   mongo() {
-    this.mongoConnetion = Mogoose.connect(
-      'mongodb://localhost:27017/GoBarber',
-      {
-        useNewUrlParser: true,
-        useFindAndModify: true,
-      }
-    );
+    this.mongoConnetion = Mogoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useFindAndModify: true,
+    });
   }
 }
 
